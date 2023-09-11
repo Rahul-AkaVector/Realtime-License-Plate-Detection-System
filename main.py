@@ -1,61 +1,3 @@
-# from ultralytics import YOLO
-# # model = YOLO('yolov8n.pt')
-#
-#
-# model = YOLO('plate.pt')
-# results = model.predict(source='1', show=True)
-
-# ------------------------------------------------
-
-# from ultralytics import YOLO
-# import cv2
-# import time
-#
-# # Load YOLO model
-# model = YOLO('plate.pt')
-#
-# # Open webcam capture
-# cap = cv2.VideoCapture(1)  # 0 represents the default webcam
-#
-# while cap.isOpened():
-#     ret, frame = cap.read()
-#
-#     if not ret:
-#         break
-#
-#     # Perform object detection
-#     results = model.predict(source=frame, show=False)
-#     detected_objects = results[0] if results[0] is not None else []
-#
-#     if len(detected_objects) > 0:
-#
-#         # Convert the frame to grayscale
-#         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-#
-#         # Save the grayscale frame
-#         cv2.imwrite('detected_image.jpg', gray_frame)
-#
-#         # Convert the frame back to BGR for displaying
-#         frame = cv2.cvtColor(gray_frame, cv2.COLOR_GRAY2BGR)
-#
-#         # Display the frame with detected objects
-#         cv2.imshow('Detected Image', frame)
-#         time.sleep(10)
-#         # cv2.waitKey(0) # Wait for a key press
-#
-#     # Wait for 10 seconds before resuming
-#
-#     # Display the original frame
-#     cv2.imshow('Webcam Feed', frame)
-#
-#     if cv2.waitKey(1) & 0xFF == ord('q'):
-#         break
-#
-# cap.release()
-# cv2.destroyAllWindows()
-
-# --------------------------------------------------
-
 from ultralytics import YOLO
 import cv2
 import time
@@ -82,17 +24,6 @@ while cap.isOpened():
 
     # Perform object detection
     results = model.predict(source=frame, show=False)
-    # detected_objects = results.pred[0] if results.pred[0] is not None else []
-    # print(results)
-    # detected_objects = results[0]
-    # print(detected_objects)
-
-    # Filter detected objects for cars and trucks
-    # car_truck_objects = [obj for obj in detected_objects if obj[5] == car_class_index or obj[5] == truck_class_index]
-    # car_truck_objects = [obj for obj in detected_objects if obj[0] in (car_class_label, truck_class_label)]
-    # car_truck_objects = [obj for obj in detected_objects if car_class_label in obj[1] or truck_class_label in obj[1]]
-    # print(detected_objects.names)
-    # car_truck_objects = [obj for obj in detected_objects if car_class_label in obj or truck_class_label in obj]
     result = results[0]
     box = result.boxes.data
     box_data = [0,0,0,0,0,0]
@@ -108,8 +39,6 @@ while cap.isOpened():
                 break
 
     xmin, ymin, xmax, ymax, score, vehicle = box_data
-    # print("\nxmin", xmin, "\nymin", ymin, "\nxmax", xmax, "\nymax", ymax, "\nscore", score, "\nvehicle", vehicle)
-    # print("BoxData : ",box_data[0:4])
 
     nframe = frame[int(ymin):int(ymax), int(xmin):int(xmax)]
 
@@ -130,3 +59,4 @@ while cap.isOpened():
 
 cap.release()
 cv2.destroyAllWindows()
+
