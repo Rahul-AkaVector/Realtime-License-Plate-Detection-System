@@ -8,7 +8,7 @@ from PIL import Image, ImageTk
 class CarDetectionApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Realtime License PLate Detection App")
+        self.root.title("Car Detection App")
 
         self.cap = None
         self.is_running = False
@@ -24,22 +24,26 @@ class CarDetectionApp:
 
         # Frames to hold the video feed and detected image
         self.video_frame = tk.Frame(self.root, width=640, height=480, bg='black')
-        self.video_frame.pack(side=tk.LEFT, padx=10, pady=10)
+        self.video_frame.grid(row=0, column=0, padx=10, pady=10)
         self.detected_frame = tk.Frame(self.root, width=640, height=480, bg='black')
-        self.detected_frame.pack(side=tk.RIGHT, padx=10, pady=10)
+        self.detected_frame.grid(row=0, column=1, padx=10, pady=10)
 
-        # Buttons in a row at the bottom
-        self.camera_button = tk.Button(self.root, text="Change Camera Input", command=self.toggle_camera)
-        self.camera_button.pack(side=tk.BOTTOM, padx=10, pady=10)
+        # Camera label in the middle
+        self.camera_label = tk.Label(self.root, text="Camera: 0", bg='black', fg='white')
+        self.camera_label.grid(row=1, column=0, columnspan=2, pady=10)
 
-        self.start_button = tk.Button(self.root, text="Start", command=self.start_detection)
-        self.start_button.pack(side=tk.BOTTOM, padx=10, pady=10)
+        # Buttons split into three columns at the bottom
+        self.button_frame = tk.Frame(self.root, bg='black')
+        self.button_frame.grid(row=2, column=0, columnspan=2, pady=10)
 
-        self.stop_button = tk.Button(self.root, text="Stop", command=self.stop_detection, state=tk.DISABLED)
-        self.stop_button.pack(side=tk.BOTTOM, padx=10, pady=10)
+        self.camera_button = tk.Button(self.button_frame, text="Change Camera Input", command=self.toggle_camera, width=20, height=2)
+        self.camera_button.grid(row=0, column=0, padx=10, pady=5)
 
-        self.camera_label = tk.Label(self.root, text=f"Camera: {self.current_camera}", bg='black', fg='white')
-        self.camera_label.pack(side=tk.BOTTOM, padx=10, pady=10)
+        self.start_button = tk.Button(self.button_frame, text="Start", command=self.start_detection, width=20, height=2)
+        self.start_button.grid(row=0, column=1, padx=10, pady=5)
+
+        self.stop_button = tk.Button(self.button_frame, text="Stop", command=self.stop_detection, state=tk.DISABLED, width=20, height=2)
+        self.stop_button.grid(row=0, column=2, padx=10, pady=5)
 
         self.canvas = tk.Canvas(self.video_frame, width=640, height=480, bg='black')
         self.canvas.pack()
